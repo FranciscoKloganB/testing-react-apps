@@ -5,6 +5,7 @@ import * as React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Login from '../../components/login'
+import { getCredentials } from '../utils'
 
 describe('Login', () => {
   let usernameInput
@@ -21,8 +22,7 @@ describe('Login', () => {
   })
 
   it('submitting the form calls onSubmit with username and password', () => {
-    const username = 'user'
-    const password = 'pass'
+    const { username, password } = getCredentials()
 
     userEvent.type(usernameInput, username)
     userEvent.type(passwordInput, password)
