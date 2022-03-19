@@ -10,6 +10,12 @@ describe('Counter', () => {
   let message;
   let buttons;
 
+  const mouseEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+    button: 0,
+  })
+
   beforeEach(() => {
     // 🐨 create a div to render your component to (💰 document.createElement)
     // 🐨 append the div to document.body (💰 document.body.append)
@@ -38,7 +44,7 @@ describe('Counter', () => {
   it('increases count by one when increment button is clicked once', () => {
     const [_, increment] = buttons
 
-    increment.click()
+    increment.dispatchEvent(mouseEvent)
 
     expect(message.textContent).toBe('Current count: 1')
   })
@@ -46,7 +52,7 @@ describe('Counter', () => {
   it('increases count by one when increment button is clicked once', () => {
     const [decrement, _] = buttons
 
-    decrement.click()
+    decrement.dispatchEvent(mouseEvent)
 
     expect(message.textContent).toBe('Current count: -1')
   })
