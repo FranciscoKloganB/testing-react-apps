@@ -1,22 +1,28 @@
 import * as React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Counter from '../../components/counter'
 
 /**
- * We are importing jest-dom/extend-expect globally on jest.config.
- * If we are using create-react-app, which does not allow us to config jest
- * we can instead use the jest setupFile.js
+ * In this exercise we avoid abstraction details by using selectors that
+ * depend less on the way components are constructed with respect to their JSX
+ * structure.
+ *
+ * We do this by using these two libs:
+ * - @testing-library/user-event
+ * - @testing-library/dom
+ *
+ * Finally, if you are in doubt about what query to use visit:
+ * - https://testing-library.com/docs/queries/about/
+ * Or if you have access to the code, paste it on the website below:
+ * - https://testing-playground.com/
  */
 describe('Counter', () => {
   let message
-  let buttons
 
-  // 🐨 swap ReactDOM.render with React Testing Library's render
-  // react-testing-library takes care of clearing the dom before each test
   beforeEach(() => {
-    const view = render(<Counter />)
-    message = view.container.firstChild.querySelector('div')
-    buttons = view.container.querySelectorAll('button')
+    render(<Counter />)
+    message = screen.getByText(/current count/i)
   })
 
   it('counter starts at 0', () => {
@@ -24,17 +30,17 @@ describe('Counter', () => {
   })
 
   it('increases count by one when increment button is clicked once', () => {
-    const [, increment] = buttons
+    const increment = screen.getByRole('button', {name: /increment/i})
 
-    fireEvent.click(increment)
+    userEvent.click(increment)
 
     expect(message).toHaveTextContent('Current count: 1')
   })
 
   it('increases count by one when increment button is clicked once', () => {
-    const [decrement] = buttons
+    const decrement = screen.getByRole('button', {name: /decrement/i})
 
-    fireEvent.click(decrement)
+    userEvent.click(decrement)
 
     expect(message).toHaveTextContent('Current count: -1')
   })
