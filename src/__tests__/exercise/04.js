@@ -28,7 +28,7 @@ describe('Login', () => {
     userEvent.type(passwordInput, password)
     userEvent.click(submitButton)
 
-    expect(handleSubmit).toHaveBeenCalledWith({username, password})
+    expect(handleSubmit).toHaveBeenNthCalledWith(1, {username, password})
   })
 })
 
