@@ -7,15 +7,18 @@ import Counter from '../../components/counter'
 
 test('counter increments and decrements when the buttons are clicked', () => {
   // 🐨 create a div to render your component to (💰 document.createElement)
-  //
   // 🐨 append the div to document.body (💰 document.body.append)
-  //
   // 🐨 use ReactDOM.render to render the <Counter /> to the div
+  const div = document.createElement('div')
+  document.body.append(div)
+  ReactDOM.render(<Counter />, div)
+
+  console.log(document.body.innerHTML)
+
   // 🐨 get a reference to the increment and decrement buttons:
   //   💰 div.querySelectorAll('button')
   // 🐨 get a reference to the message div:
   //   💰 div.firstChild.querySelector('div')
-  //
   // 🐨 expect the message.textContent toBe 'Current count: 0'
   // 🐨 click the increment button (💰 increment.click())
   // 🐨 assert the message.textContent
