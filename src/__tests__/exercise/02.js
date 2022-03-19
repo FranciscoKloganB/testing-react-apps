@@ -1,10 +1,12 @@
-// simple test with React Testing Library
-// http://localhost:3000/counter
-
 import * as React from 'react'
-import {render, fireEvent, screen} from '@testing-library/react'
+import {render, fireEvent } from '@testing-library/react'
 import Counter from '../../components/counter'
 
+/**
+ * We are importing jest-dom/extend-expect globally on jest.config.
+ * If we are using create-react-app, which does not allow us to config jest
+ * we can instead use the jest setupFile.js
+ */
 describe('Counter', () => {
   let message
   let buttons
@@ -18,7 +20,7 @@ describe('Counter', () => {
   })
 
   it('counter starts at 0', () => {
-    expect(message.textContent).toBe('Current count: 0')
+    expect(message).toHaveTextContent('Current count: 0')
   })
 
   it('increases count by one when increment button is clicked once', () => {
@@ -26,7 +28,7 @@ describe('Counter', () => {
 
     fireEvent.click(increment)
 
-    expect(message.textContent).toBe('Current count: 1')
+    expect(message).toHaveTextContent('Current count: 1')
   })
 
   it('increases count by one when increment button is clicked once', () => {
@@ -34,6 +36,6 @@ describe('Counter', () => {
 
     fireEvent.click(decrement)
 
-    expect(message.textContent).toBe('Current count: -1')
+    expect(message).toHaveTextContent('Current count: -1')
   })
 })
