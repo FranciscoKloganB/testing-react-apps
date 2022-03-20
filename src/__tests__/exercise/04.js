@@ -5,17 +5,14 @@ import * as React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Login from '../../components/login'
+import { build, fake } from '@jackfranklin/test-data-bot'
 
-import * as faker from 'faker'
-
-function getCredentials(overrides = {}) {
-  return {
-    username: faker.internet.userName(),
-    password: faker.internet.password(),
-    ...overrides,
-  }
-}
-
+const buildLoginForm = build({
+  fields: {
+    username: fake(faker => faker.internet.userName()),
+    password: fake(faker => faker.internet.password()),
+  },
+})
 
 describe('Login', () => {
   let usernameInput
@@ -32,7 +29,7 @@ describe('Login', () => {
   })
 
   it('submitting the form calls onSubmit with username and password', () => {
-    const { username, password } = getCredentials({ password: '!h#ello_-W0rLd1' })
+    const {username, password} = buildLoginForm({password: '!h#ello_-W0rLd1'})
 
     userEvent.type(usernameInput, username)
     userEvent.type(passwordInput, password)
