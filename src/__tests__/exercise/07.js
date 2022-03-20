@@ -8,7 +8,7 @@ import EasyButton from '../../components/easy-button'
 
 function Wrapper({children}) {
   return (
-    <ThemeProvider>
+    <ThemeProvider initialTheme='light'>
       {children}
     </ThemeProvider>
   )
