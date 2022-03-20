@@ -5,7 +5,17 @@ import * as React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Login from '../../components/login'
-import { getCredentials } from '../utils'
+
+import * as faker from 'faker'
+
+function getCredentials(overrides = {}) {
+  return {
+    username: faker.internet.userName(),
+    password: faker.internet.password(),
+    ...overrides,
+  }
+}
+
 
 describe('Login', () => {
   let usernameInput
@@ -22,7 +32,7 @@ describe('Login', () => {
   })
 
   it('submitting the form calls onSubmit with username and password', () => {
-    const { username, password } = getCredentials()
+    const { username, password } = getCredentials({ password: '!h#ello_-W0rLd1' })
 
     userEvent.type(usernameInput, username)
     userEvent.type(passwordInput, password)
