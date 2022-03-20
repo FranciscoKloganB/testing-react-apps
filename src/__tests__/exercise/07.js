@@ -5,30 +5,30 @@ import * as React from 'react'
 import {render as rtlRender, screen} from '@testing-library/react'
 import {ThemeProvider} from '../../components/theme'
 import EasyButton from '../../components/easy-button'
+import userEvent from '@testing-library/user-event'
 
 function Wrapper({children}) {
-  return (
-    <ThemeProvider initialTheme='light'>
-      {children}
-    </ThemeProvider>
-  )
+  return <ThemeProvider initialTheme="light">{children}</ThemeProvider>
 }
 
 function render(Component, options) {
   return rtlRender(Component, {wrapper: Wrapper, ...options})
 }
 
+const defaultTheme = 'background-color: white; color: black;'
+const darkTheme = 'background-color: black; color: white;'
+
 describe('EasyButton', () => {
-  test('renders with the light styles for the light theme', () => {
-    // 🐨 uncomment all of this code and your test will be busted on the next line:
+  it('renders with the light styles for the light theme', () => {
     render(<EasyButton>Easy</EasyButton>)
     const button = screen.getByRole('button', {name: /easy/i})
-    expect(button).toHaveStyle(`
-      background-color: white;
-      color: black;
-    `)
+    expect(button).toHaveStyle(defaultTheme)
+  })
 
-    // 🐨 update the `render` call above to use the wrapper option using the ThemeProvider
+  it('renders with the dark styles for the light theme', () => {
+    render(<EasyButton initialTheme="dark">Easy</EasyButton>)
+    const button = screen.getByRole('button', {name: /easy/i})
+    expect(button).toHaveStyle(darkTheme)
   })
 })
 
