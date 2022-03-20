@@ -21,22 +21,42 @@ describe('Location', () => {
     useCurrentPosition.mockImplementation(useMockCurrentPosition)
   })
 
-  it('displays the users current location', async () => {
-    render(<Location />)
-    
-    expect(useCurrentPosition).toHaveBeenCalledWith() // no args
-    expect(screen.getByLabelText(/loading/i)).toBeInTheDocument()
+  describe('success', () => {
+    it('displays the users current location', async () => {
+      render(<Location />)
 
-    act(() => {
-      setLocation([fakePosition])
+      expect(useCurrentPosition).toHaveBeenCalledWith() // no args
+      expect(screen.getByLabelText(/loading/i)).toBeInTheDocument()
+
+      act(() => {
+        setLocation([fakePosition])
+      })
+
+      expect(screen.queryByLabelText(/loading/i)).not.toBeInTheDocument()
+      expect(screen.getByText(/latitude/i)).toHaveTextContent(
+        `Latitude: ${fakePosition.coords.latitude}`,
+      )
+      expect(screen.getByText(/longitude/i)).toHaveTextContent(
+        `Longitude: ${fakePosition.coords.longitude}`,
+      )
     })
+  })
 
-    expect(screen.queryByLabelText(/loading/i)).not.toBeInTheDocument()
-    expect(screen.getByText(/latitude/i)).toHaveTextContent(
-      `Latitude: ${fakePosition.coords.latitude}`,
-    )
-    expect(screen.getByText(/longitude/i)).toHaveTextContent(
-      `Longitude: ${fakePosition.coords.longitude}`,
-    )
+  describe('failure', () => {
+    const error = {message: 'ups, could not obtain location' }
+
+    it('displays the users current location', async () => {
+      render(<Location />)
+
+      expect(useCurrentPosition).toHaveBeenCalledWith() // no args
+      expect(screen.getByLabelText(/loading/i)).toBeInTheDocument()
+
+      act(() => {
+        setLocation([fakePosition, error])
+      })
+
+      expect(screen.queryByLabelText(/loading/i)).not.toBeInTheDocument()
+      expect(screen.getByRole('alert')).toHaveTextContent(error.message)
+    })
   })
 })
