@@ -2,18 +2,8 @@
 // http://localhost:3000/easy-button
 
 import * as React from 'react'
-import {render, screen} from '@testing-library/react'
-import {ThemeProvider} from '../../components/theme'
 import EasyButton from '../../components/easy-button'
-
-function renderWithTheme(ui, {theme = 'light', ...options} = {}) {
-  const wrapper = ({children}) => (
-    <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
-  )
-
-  // Return the container for consumers of our API
-  return render(ui, { wrapper, ...options })
-}
+import {render as renderWithTheme, screen} from '../../test/test-utils'
 
 const defaultTheme = 'background-color: white; color: black;'
 const darkTheme = 'background-color: black; color: white;'
