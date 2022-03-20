@@ -24,12 +24,11 @@ const server = setupServer(...handlers)
 
 describe('Login', () => {
   beforeAll(() => server.listen())
+  beforeEach(() => render(<Login />))
   afterEach(() => server.resetHandlers())
   afterAll(() => server.close())
 
   it('submitting the form calls onSubmit with username and password', async () => {
-    render(<Login />)
-
     const {username, password} = buildLoginForm()
 
     userEvent.type(screen.getByLabelText(/username/i), username)
@@ -40,5 +39,31 @@ describe('Login', () => {
     await waitForElementToBeRemoved(() => screen.getByLabelText(/loading/i))
 
     expect(screen.getByText(username)).toBeInTheDocument()
+  })
+
+  describe('the credentials are invalid', () =>{
+    it('fails when password is not submitted', async () => {
+      const {username } = buildLoginForm()
+
+      userEvent.type(screen.getByLabelText(/username/i), username)
+      userEvent.click(screen.getByRole('button', {name: /submit/i}))
+
+      await waitForElementToBeRemoved(() =>
+        screen.getByLabelText(/loading/i),
+      )
+
+      expect(screen.getByRole('alert')).toHaveTextContent('password required')
+    })
+
+    it('fails when username is not submitted', async () => {
+      const { password} = buildLoginForm()
+
+      userEvent.type(screen.getByLabelText(/password/i), password)
+      userEvent.click(screen.getByRole('button', {name: /submit/i}))
+
+      await waitForElementToBeRemoved(() => screen.getByLabelText(/loading/i))
+
+      expect(screen.getByRole('alert')).toHaveTextContent('username required')
+    })
   })
 })
