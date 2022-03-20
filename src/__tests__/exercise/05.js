@@ -11,6 +11,7 @@ import {rest} from 'msw'
 import {setupServer} from 'msw/node'
 
 import Login from '../../components/login-submission'
+import { handlers } from 'test/server-handlers'
 
 const buildLoginForm = build({
   fields: {
@@ -19,14 +20,7 @@ const buildLoginForm = build({
   },
 })
 
-const server = setupServer(
-  rest.post(
-    'https://auth-provider.example.com/api/login',
-    async (req, res, ctx) => {
-      return res(ctx.json({ username: req.body.username }))
-    },
-  )
-)
+const server = setupServer(...handlers)
 
 describe('Login', () => {
   beforeAll(() => server.listen())
