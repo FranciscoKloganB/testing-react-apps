@@ -68,4 +68,27 @@ describe('Login', () => {
       )
     })
   })
+
+  describe('unexpected errors occur on the backend', () => {
+    const textErrorMessage = 'ups, something went wrong'
+    
+    beforeEach(() => {
+      server.use(
+        rest.post(
+          'https://auth-provider.example.com/api/login',
+          async (req, res, ctx) => {
+            return res(ctx.status(500), ctx.json({message: textErrorMessage}))
+          },
+        ),
+      )
+    })
+
+    it('displays the error message to the user', async () => {
+      userEvent.click(screen.getByRole('button', {name: /submit/i}))
+
+      await waitForElementToBeRemoved(() => screen.getByLabelText(/loading/i))
+
+      expect(screen.getByRole('alert')).toHaveTextContent(textErrorMessage)
+    })
+  })
 })
